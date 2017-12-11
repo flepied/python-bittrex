@@ -206,9 +206,9 @@ class TestBittrexV11AccountAPI(unittest.TestCase):
         actual = self.bittrex.get_balance('BTC')
         test_auth_basic_failures(self, actual, 'invalid key, invalid secret')
 
-    def test_get_openorders(self):
+    def test_get_open_orders(self):
         actual = self.bittrex.get_open_orders('BTC-LTC')
-        test_basic_response(self, actual, "get_openorders")
+        test_basic_response(self, actual, "get_open_orders")
         self.assertTrue(isinstance(actual['result'], list), "result is not a list")
 
     def test_get_balances(self):
@@ -313,10 +313,15 @@ class TestBittrexV20AccountAPI(unittest.TestCase):
         actual = self.bittrex.get_balance('BTC')
         test_auth_basic_failures(self, actual, 'invalid key, invalid secret')
 
-    def test_get_openorders(self):
+    def test_get_open_orders(self):
         actual = self.bittrex.get_open_orders('BTC-LTC')
-        test_basic_response(self, actual, "get_openorders")
-        self.assertTrue(isinstance(actual['result'], list), "result is not a list")
+        test_basic_response(self, actual, "get_open_orders")
+        self.assertIsInstance(actual['result'], list)
+
+    def test_get_open_orders_empty_arg(self):
+        actual = self.bittrex.get_open_orders()
+        test_basic_response(self, actual, "get_open_orders")
+        self.assertIsInstance(actual['result'], list)
 
     def test_get_balances(self):
         actual = self.bittrex.get_balances()

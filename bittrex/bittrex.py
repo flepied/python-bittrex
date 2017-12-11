@@ -398,17 +398,22 @@ class Bittrex(object):
 
         Endpoint:
         1.1 /market/getopenorders
-        2.0 /key/market/getopenorders
+        2.0 /key/market/getopenorders or /key/orders/getopenorders
 
         :param market: String literal for the market (ie. BTC-LTC)
         :type market: str
         :return: Open orders info in JSON
         :rtype : dict
         """
-        return self._api_query(path_dict={
-            API_V1_1: '/market/getopenorders',
-            API_V2_0: '/key/market/getopenorders'
-        }, options={'market': market, 'marketname': market} if market else None, protection=PROTECTION_PRV)
+        if market:
+            return self._api_query(path_dict={
+                API_V1_1: '/market/getopenorders',
+                API_V2_0: '/key/market/getopenorders'
+            }, options={'market': market, 'marketname': market}, protection=PROTECTION_PRV)
+        else:
+            return self._api_query(path_dict={
+                API_V2_0: '/key/orders/getopenorders'
+            }, protection=PROTECTION_PRV)
 
     def get_balances(self):
         """
